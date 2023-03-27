@@ -1,6 +1,6 @@
 
 <hr>
-<form method="post" action="index.php?uc=validerFrais&action=modifierForfait&visiteur=<?= $unVisiteur ?>" role="form">
+<form method="post" action="index.php?uc=validerFrais&action=modifierForfait&visiteur=<?= $unVisiteur ?>&mois=<?= $mois?>" role="form">
 <div class="panel panel-info">
     <div class="panel-heading">Eléments forfaitisés</div>
     <table class="table table-bordered table-responsive">

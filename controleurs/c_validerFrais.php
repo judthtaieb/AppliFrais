@@ -17,8 +17,9 @@ switch ($action) {
 
         $mois = filter_input(INPUT_POST, 'mois', FILTER_SANITIZE_ENCODED);
         $unVisiteur = filter_input(INPUT_POST, 'visiteur', FILTER_SANITIZE_ENCODED);
-        $fraisForfaitVisiteur = $pdo->getLesFraisForfait(  $unVisiteur, $mois);
-        $fraisHorsForfaitVisiteur = $pdo->getLesFraisHorsForfait(  $unVisiteur, $mois);
+        $fraisForfaitVisiteur = $pdo->getLesFraisForfait(  $unVisiteur, '202303');
+        //var_dump( $fraisForfaitVisiteur);
+        $fraisHorsForfaitVisiteur = $pdo->getLesFraisHorsForfait(  $unVisiteur, '202303');
         //var_dump($fraisHorsForfaitVisiteur);
         include 'vues/v_validerDetail.php';
         
