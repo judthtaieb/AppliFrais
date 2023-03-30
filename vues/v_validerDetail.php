@@ -72,7 +72,7 @@
 </div>
 </form>
 
-<a href = "index.php?uc=validerFrais&action=validerFiche&idvisiteur=<?php echo $unVisiteur?>">
+<a href = "index.php?uc=validerFrais&action=validerFiche&idvisiteur=<?php echo $unVisiteur?>&mois=<?= $mois ?>">
 <button id="ok" type="submit" value="Valider" class="btn btn-primary" role="button">Valider la fiche </button></a>
 
    
