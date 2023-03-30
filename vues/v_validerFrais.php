@@ -6,7 +6,7 @@
     <div class="form-group">
         <select name="mois" class="form-select" aria-label="Default select example">
         <?php foreach ($moisVisiteur as $unMoisVisiteur) { ?>
-            <option value="<?php echo $mois ?>"> <?php echo $unMoisVisiteur['mois'].'/'.$unMoisVisiteur['annee'] ?></option>
+            <option value="<?php echo $unMoisVisiteur['annee'].$unMoisVisiteur['mois'] ?>"> <?php echo $unMoisVisiteur['mois'].'/'.$unMoisVisiteur['annee'] ?></option>
             <?php
             }
             ?>
