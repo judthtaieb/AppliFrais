@@ -1,5 +1,6 @@
 
 <h2>Fiches de frais visiteurs </h2>
+<?php if (isset($error_message)) echo"<div class=\"alert alert-danger\" role=\"alert\">$error_message</div>" ?>
 
 <h3>Sélectionner un mois : </h3>
 <form action="index.php?uc=validerFrais&action=detailFiche" method="post" role="form">

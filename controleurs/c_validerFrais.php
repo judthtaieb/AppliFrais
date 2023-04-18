@@ -16,10 +16,22 @@ switch ($action) {
     case 'detailFiche':
 
         $mois = filter_input(INPUT_POST, 'mois', FILTER_SANITIZE_ENCODED);
-        $unVisiteur = filter_input(INPUT_POST, 'visiteur', FILTER_SANITIZE_ENCODED);
-        $fraisForfaitVisiteur = $pdo->getLesFraisForfait(  $unVisiteur, $mois);
-        $fraisHorsForfaitVisiteur = $pdo->getLesFraisHorsForfait(  $unVisiteur, $mois);
-        include 'vues/v_validerDetail.php';
+        $visiteur = filter_input(INPUT_POST, 'visiteur', FILTER_SANITIZE_ENCODED);
+      
+         if (!$pdo->estPremierFraisMois($visiteur, $mois)) {
+            $error_message = "aucune fiche de frais n'est disponible pour le visiteur ce mois";
+            //possibilite d'inclure les parametres $visiteur et $mois dans le message
+    
+            $visiteur = $pdo->getVisiteur();
+
+            $moisVisiteur = $pdo->getLesMoisVisiteur();
+            include 'vues/v_validerFrais.php';
+        } else {
+            $fraisForfaitVisiteur = $pdo->getLesFraisForfait(  $visiteur, $mois);
+            $fraisHorsForfaitVisiteur = $pdo->getLesFraisHorsForfait(  $visiteur, $mois);
+            include 'vues/v_validerDetail.php';
+        }
+        
         break;
 
     case 'modifierForfait':
