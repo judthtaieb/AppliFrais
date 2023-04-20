@@ -1,6 +1,15 @@
+<?php
+if($action == 'modifierForfait'){
+echo" les frais forfaits ont bien été modifiés";
+}
+?></br>
+</br>
+Informations  concernant le visiteur :
+</br>
+identifiant: <?= $_SESSION['user'] ?></br>
+mois: <?=$_SESSION['mois'] ?></br>
 
-<hr>
-<form method="post" action="index.php?uc=validerFrais&action=modifierForfait&visiteur=<?= $unVisiteur ?>&mois=<?= $mois?>" role="form">
+<form method="post" action="index.php?uc=validerFrais&action=modifierForfait&visiteur=<?= $visiteur ?>&mois=<?= $mois?>" role="form">
 <div class="panel panel-info">
     <div class="panel-heading">Eléments forfaitisés</div>
     <table class="table table-bordered table-responsive">
@@ -29,11 +38,11 @@
         </tr>
     </table>
           
-    <input id="modif" type="submit" value="Modifier" class="btn btn-primary" role="button">
+    <input id="modif" type="submit" value="Modifier" class="btn btn-success" role="button">
 </div>
 </form> 
 
-<form method="post" action="index.php?uc=validerFrais&action=supprimerFraisHF&visiteur=<?= $unVisiteur ?>" role="form">
+<form method="post" action="index.php?uc=validerFrais&action=supprimerFraisHF&visiteur=<?= $visiteur ?>" role="form">
 <div class="panel panel-info">
     <div class="panel-heading">Descriptif des éléments hors forfait </div>
     <table class="table table-bordered table-responsive">
@@ -45,6 +54,7 @@
         </tr>
         <?php
         $i=1;
+        if(is_array( $fraisHorsForfaitVisiteur )){
         foreach ($fraisHorsForfaitVisiteur as $unFraisHorsForfaitVisiteur) {
             $date = $unFraisHorsForfaitVisiteur['date'];
             $libelle = htmlspecialchars($unFraisHorsForfaitVisiteur['libelle']);
@@ -66,13 +76,15 @@
             <?php
             $i++; 
         }
+    }
         ?>
     </table>
-    <input id="supp" type="submit" value="Supprimer" class="btn btn-primary" role="button">
+    <input id="supp" type="submit" value="Supprimer" class="btn btn-success" role="button">
+    <input id="supp" type="submit" value="Reporter" class="btn btn-success" role="button">
 </div>
 </form>
 
-<a href = "index.php?uc=validerFrais&action=validerFiche&idvisiteur=<?php echo $unVisiteur?>&mois=<?= $mois ?>">
+<a href = "index.php?uc=validerFrais&action=validerFiche&idvisiteur=<?php echo $visiteur?>&mois=<?= $mois ?>">
 <button id="ok" type="submit" value="Valider" class="btn btn-primary" role="button">Valider la fiche </button></a>
 
    

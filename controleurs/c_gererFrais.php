@@ -28,19 +28,21 @@ $numMois = substr($mois, 4, 2);
 //ds l url on lit le parametre action et le stocke ds une variable $action
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_ENCODED);
 
+
 //va regarder la ction et agir differemment selon les cas 
 switch ($action) {
 
     //lorsque l utilisateur choisi de saisir ses frais
     //si c est le premier frais du mois,on cree une nvlle ligne de frais(BDD)
 case 'saisirFrais':
-    if ($pdo->estPremierFraisMois($idVisiteur, $mois)) { //si la fonction renvoie vrai
+    if ($pdo->estPremierFraisMois($idVisiteur, $mois)) { 
         $pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
     }
     break;
     //lorsque le visiteur veut valider ses frais forfaits,si la quantite des frais saisis  est valide ,on l inscrit 
 case 'validerMajFraisForfait':
     $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_SANITIZE_ENCODED);
+    $lesFrais=$_POST['lesFrais'];
     if (lesQteFraisValides($lesFrais)) {
         $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
         //sinon on affiche une erreur
@@ -79,12 +81,14 @@ case 'supprimerFrais':
 }
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $mois);
 
+
 //qd on clique sur la page "renseigner fiche de frais",une insertion se fait ds la ligneforfait de la BDD
 //contenant idvisiteur,mois et quantite a 0
 //cette fonction renvoie une tableau contenant les elements de la fiche de frais
 //qui est insere dans la table ligneforfait de la BDD 
 
 $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $mois);
+
 require 'vues/v_listeFraisForfait.php';
 
 //rempli le tableau de la vue  renseigner frais ac les donnees saisies ds le formulaire de frais hf

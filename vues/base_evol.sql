@@ -23,4 +23,4 @@ ALTER TABLE `visiteur` ADD FOREIGN KEY (`type`) REFERENCES `type`(`id`) ON DELET
  SELECT * FROM `visiteur` WHERE `type` = 2
 
  --script sql update
- UPDATE fichefrais SET idetat = 'CL' WHERE idetat != 'CL'
+ UPDATE fichefrais SET idetat = 'CL' WHERE idetat ='CR'

@@ -22,8 +22,7 @@
     <h3>Eléments forfaitisés</h3>
     <div class="col-md-4">
         <!-- va ds index puis ds gerer frais et ensuite va a l action validerMajFrais -->
-        <form method="post" 
-        
+        <form method="post"
               action="index.php?uc=gererFrais&action=validerMajFraisForfait" 
               role="form">
             <fieldset>       

@@ -240,6 +240,7 @@ class PdoGsb
         }
     }
 
+
     /**
      * Met à jour le nombre de justificatifs de la table ficheFrais
      * pour le mois et le visiteur concerné
@@ -283,7 +284,7 @@ class PdoGsb
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requetePrepare->execute();
-        if ($requetePrepare->fetch()) {
+        if (!$requetePrepare->fetch()) {
             $boolReturn = true;
         }
         return $boolReturn;
@@ -497,8 +498,8 @@ class PdoGsb
     {
         
         $requetePrepare = PdoGsb::$monPdo->prepare(
-            'SELECT visiteur.id AS id, visiteur.nom AS nom, '
-            . 'visiteur.prenom AS prenom '
+            'SELECT  distinct visiteur.id AS id,  visiteur.nom AS nom, '
+            . ' visiteur.prenom AS prenom '
             . 'FROM visiteur INNER JOIN fichefrais ON  visiteur.id = fichefrais.idvisiteur '
             . 'WHERE type = 1 '
             .'ORDER BY  nom asc '
@@ -513,7 +514,8 @@ class PdoGsb
     public function getLesMoisVisiteur()
     {
         $requetePrepare = PdoGSB::$monPdo->prepare(
-            'SELECT fichefrais.mois AS mois FROM fichefrais '
+
+            'SELECT distinct fichefrais.mois AS mois FROM fichefrais '
             . 'ORDER BY mois desc'
         );
     
@@ -572,5 +574,38 @@ class PdoGsb
         return $libelle['libelle'];
     }
 
+    public function ficheMois($idVisiteur, $mois)
+    {
+        $boolReturn = false;
+        $requetePrepare = PdoGsb::$monPdo->prepare(
+            'SELECT fichefrais.mois FROM fichefrais '
+            . 'WHERE fichefrais.mois = :unMois '
+            . 'AND fichefrais.idvisiteur = :unIdVisiteur'
+        );
+        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        if ($requetePrepare->fetch()) {
+            $boolReturn = true;
+        }
+        return $boolReturn;
+    }
+
+    public function getDateHF($id)
+    {
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+            'SELECT  date FROM lignefraishorsforfait WHERE id = :unId'
+        
+        );
+        $requetePrepare->bindParam(':unId', $id, PDO::PARAM_INT);
+        $requetePrepare->execute();
+        $date= $requetePrepare->fetch();
+        $jour = substr($date['date'], 8, 2);
+        $moisFormates[$date['date']] = array('jour' => $jour);
+        
+        return $jour;
+    }
      
+
+   
 }
