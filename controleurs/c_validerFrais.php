@@ -60,6 +60,8 @@ switch ($action) {
        $fraisHorsForfaitVisiteur = $pdo->getLesFraisHorsForfait($visiteur , $mois);
        $nb = count ( $fraisHorsForfaitVisiteur );
        
+
+       $datemax= '10'.$_SESSION['mois'];
         //boucle sur l ensemble des frais hf existants :id1,id2...
         for ($i = 1 ; $i<=$nb ; $i++){
             //si on selectionne un id
@@ -97,7 +99,7 @@ switch ($action) {
         include 'vues/v_ficheValidee.php';
         
         break;
-
+     
    
 
     

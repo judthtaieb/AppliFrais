@@ -1,1 +1,1 @@
-la fiche a bien été payée!
+la fiche a  été remboursée 

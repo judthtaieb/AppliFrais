@@ -1,6 +1,5 @@
-
 <hr>
-<form method="post" action="index.php?uc=validerFrais&action=modifierForfait" role="form">
+<form method="post" action="uc=suivrePaiementFicheFrais&action=misePaiementFiche>" role="form">
 <div class="panel panel-info">
     <div class="panel-heading">Eléments forfaitisés</div>
     <table class="table table-bordered table-responsive">
@@ -31,6 +30,7 @@
           
    
 </div>
+<?php var_dump($etat);?>
 
 </form> 
 <form method="post" action="index.php?uc=validerFrais&action=supprimerFraisHF&visiteur=<?= $unVisiteur ?>" role="form">
@@ -59,8 +59,16 @@
         ?>
     </table>
   
-</div>
-</form>
 
+</div>
+<?php
+if($etat =="MP"){?>
+<a href = "index.php?uc=suivrePaiementFicheFrais&action=remboursee&visiteur=<?php echo $unVisiteur?>&mois=<?=$mois?>">
+<button id="ok" type="submit" value="Valider" class="btn btn-primary" role="button"> Rembourser la fiche </button></a>
+<?php }else{?>
+    
 <a href = "index.php?uc=suivrePaiementFicheFrais&action=misePaiementFiche&visiteur=<?php echo $unVisiteur?>">
 <button id="ok" type="submit" value="Valider" class="btn btn-primary" role="button">Mise en paiement </button></a>
+<?php }?>
+
+</form>
