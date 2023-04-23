@@ -618,7 +618,17 @@ class PdoGsb
         $etat= $requetePrepare->fetch();
         return $etat['idetat'];
     }
-     
+    public function setMoisencoursFraisHF($date,$id){
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+            'UPDATE lignefraishorsforfait '
+            . 'SET mois = :unMois '
+            . 'WHERE lignefraishorsforfait.id = :unId '
+         );
+         $requetePrepare->bindParam(':unMois', $date, PDO::PARAM_STR);
+         $requetePrepare->bindParam(':unId', $id, PDO::PARAM_INT);
+         $requetePrepare->execute();
+
+    }
 
    
 }

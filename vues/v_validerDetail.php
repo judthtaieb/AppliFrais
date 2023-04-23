@@ -8,7 +8,15 @@ Informations  concernant le visiteur :
 </br>
 identifiant: <?= $_SESSION['user'] ?></br>
 mois: <?=$_SESSION['mois'] ?></br>
-
+<div class="panel panel-primary">
+    <div class="panel-heading">Fiche de frais du mois 
+        <?php echo $numMois . '-' . $numAnnee ?> : </div>
+    <div class="panel-body">
+        <strong><u>Etat :</u></strong> <?php echo $libEtat ?>
+        depuis le <?php echo $dateModif ?> <br> 
+        <strong><u>Montant validé :</u></strong> <?php echo $montantValide ?>
+    </div>
+</div>
 <form method="post" action="index.php?uc=validerFrais&action=modifierForfait&visiteur=<?= $visiteur ?>&mois=<?= $mois?>" role="form">
 <div class="panel panel-info">
     <div class="panel-heading">Eléments forfaitisés</div>
@@ -39,6 +47,7 @@ mois: <?=$_SESSION['mois'] ?></br>
     </table>
           
     <input id="modif" type="submit" value="Modifier" class="btn btn-success" role="button">
+    
 </div>
 </form> 
 
@@ -80,7 +89,7 @@ mois: <?=$_SESSION['mois'] ?></br>
         ?>
     </table>
     <input id="supp" type="submit" value="Supprimer" class="btn btn-success" role="button">
-    <input id="supp" type="submit" value="Reporter" class="btn btn-success" role="button">
+    <input id="ok" type="submit" formaction="index.php?uc=validerFrais&action=reporter" value="Reporter" class="btn btn-success" role="button">
 </div>
 </form>
 

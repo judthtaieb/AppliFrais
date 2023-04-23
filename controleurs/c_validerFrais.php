@@ -21,6 +21,13 @@ switch ($action) {
        $_SESSION['mois']=$mois;
        $_SESSION['user']=$visiteur;
        $moisVisiteur = $pdo->getLesMoisVisiteur();
+       $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($visiteur, $mois);
+    $numMois = substr($mois, 4, 2);
+            $numAnnee = substr($mois, 0, 4);
+    $libEtat = $lesInfosFicheFrais['libEtat'];
+    $montantValide = $lesInfosFicheFrais['montantValide'];
+    $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
+    
          if (!$pdo->estPremierFraisMois($visiteur, $mois)) {
             $moisVisiteur = $pdo->getLesMoisVisiteur();
             $fraisForfaitVisiteur = $pdo->getLesFraisForfait(  $visiteur, $mois);
@@ -61,7 +68,7 @@ switch ($action) {
        $nb = count ( $fraisHorsForfaitVisiteur );
        
 
-       $datemax= '10'.$_SESSION['mois'];
+       
         //boucle sur l ensemble des frais hf existants :id1,id2...
         for ($i = 1 ; $i<=$nb ; $i++){
             //si on selectionne un id
@@ -75,9 +82,6 @@ switch ($action) {
                 $pdo->majLibelle($nvlibelle,$idL);
                 echo $nvlibelle;
                 echo $idL;
-                }elseif($jour > 10){
-                    $jour=$pdo->getDateHF($_POST['id'.$i]);
-                    
                 }
 
      
@@ -90,6 +94,75 @@ switch ($action) {
         
         include 'vues/v_validerDetail.php';
         break;
+
+        case 'reporter':
+            var_dump($_POST); 
+            $levisiteur=$_SESSION['user'];
+            $mois=$_SESSION['mois'];
+    
+            $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($levisiteur, $mois);
+            
+            // compte le nombre de ligne hors forfait pour l'utilisateur
+            $nb=count($lesFraisHorsForfait);
+          
+            for ($i=1; $i<=$nb; $i++){
+                // cas genéral ou l'on souhaite refusé un remboursement
+               if (isset($_POST['id'.$i])){ 
+    
+                    // verifier si on à une date correcte < au 10 du mois en cours 
+                    // la date du jour a verifier
+                    $id=$_POST['id'.$i];
+                    $date_jour_initial=$pdo->getDateHF($id);
+                    echo $date_jour_initial;
+                    $date_jour = new DateTimeImmutable($date_jour_initial);
+    
+                    // la date du mois de référence au 10 du mois au max
+                    $annee_max=substr($_SESSION['mois'],0,4);
+                    $mois_max=substr($_SESSION['mois'],4,2);
+                    $jour_max=10;
+                    $date_max = new DateTimeImmutable($annee_max."-".$mois_max."-".$jour_max);
+                    // on verifie le nombre jour la date à verifier et le 10 du mois en cours
+                    $interval = $date_max->diff($date_jour);
+                    echo $interval->format('%a ');
+                    // si on est >=  0 alors on est dans le systeme de report
+    
+                    // 1 Modifier le mois pour le mois dans hors forfait 
+                    // on passe de 202304 à 202305
+                
+                    if (   $interval -> format('%a') >0 ) {
+            
+                    
+                      $dates = new DateTime($annee_max."-".$mois_max."-".$jour_max);
+                      $dates->modify('+1 month');
+                    
+                      $date_format= $dates->format('Ym');
+                    
+    
+                    // avant la modification car il y a une contrainte d'intégrité
+                    // 2 creer si elle n existe pas nouvelle ligne fiche forfait
+                    // 3 nouvelle ligne frais forfait
+                     $pdo->creeNouvellesLignesFrais($_SESSION['user'], $date_format);
+    
+                    // 1 Modification de la date
+                      $pdo->setMoisencoursFraisHF($date_format,$id);
+                    }  
+    
+               }
+            }
+    
+            
+            $lesFraisForfait = $pdo->getLesFraisForfait($levisiteur, $mois);
+            $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($levisiteur, $mois);
+            
+       
+            include 'vues/v_valider_detail.php';
+          
+    
+    
+    
+    
+    
+            break;    
 
     case 'validerFiche':
         $mois=$_SESSION['mois'];
